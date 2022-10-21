@@ -10,7 +10,10 @@ var proxy = builder.Services.AddReverseProxy();
 
 var app = builder.Build();
 
-app.MapReverseProxy();
+app.MapReverseProxy(applicationBuilder =>
+{
+    applicationBuilder.UseLoadBalancing();
+});
 app.MapGet("/", () => "Hello World!");
 
 app.Run();

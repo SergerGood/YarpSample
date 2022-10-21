@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.LoadBalancing;
 
 namespace YarpSample.Proxy.Configuration;
 
@@ -19,10 +20,7 @@ public class ProxyConfig : IProxyConfig
             {
                 RouteId = "CustomerRoute",
                 ClusterId = clusterId,
-                Match = new RouteMatch
-                {
-                    Path = "/api/customers/{**catch-all}"
-                }
+                Match = new RouteMatch {Path = "/api/customers/{**catch-all}"}
             }
         };
 
@@ -34,13 +32,10 @@ public class ProxyConfig : IProxyConfig
                 ClusterId = clusterId,
                 Destinations = new Dictionary<string, DestinationConfig>
                 {
-                    {
-                        "server", new DestinationConfig
-                        {
-                            Address = "https://ya.ru"
-                        }
-                    }
-                }
+                    {"customerServer1", new DestinationConfig { Address = "https://ya.ru" }},
+                    {"customerServer2", new DestinationConfig { Address = "https://google.ru" }}
+                },
+                LoadBalancingPolicy = LoadBalancingPolicies.RoundRobin
             }
         };
 }
