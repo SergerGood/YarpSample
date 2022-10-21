@@ -38,7 +38,12 @@ public class ProxyConfig : IProxyConfig
                 {"customerServer1", new DestinationConfig {Address = "https://ya.ru"}},
                 {"customerServer2", new DestinationConfig {Address = "https://google.ru"}}
             },
-            LoadBalancingPolicy = LoadBalancingPolicies.RoundRobin
+            LoadBalancingPolicy = LoadBalancingPolicies.RoundRobin,
+            HttpClient = new HttpClientConfig
+            {
+                MaxConnectionsPerServer = 10,
+                DangerousAcceptAnyServerCertificate = true
+            }
         };
 
         return new List<ClusterConfig> {clusterConfig};
